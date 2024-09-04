@@ -16,15 +16,13 @@ import java.util.concurrent.TimeUnit;
 import io.phanisment.hardcore.Main;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class PlayerRespawn {
-	private static final ConcurrentHashMap<UUID, Long> bannedPlayers = new ConcurrentHashMap<>();
-
+public abstract class MixinPlayerRespawn {
 	@Inject(method = "copyFrom", at = @At("RETURN"))
 	private void onPlayerRespawn(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo info) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 		UUID playerUUID = player.getUuid();
 		long banEndTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(20);
-		bannedPlayers.put(playerUUID, banEndTime);
+		Main.bannedPlayers.put(playerUUID, banEndTime);
 		player.networkHandler.disconnect(Text.of("You have been banned for 20 minutes due to respawn."));
 	}
 }
