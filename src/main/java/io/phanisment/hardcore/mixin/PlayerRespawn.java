@@ -1,4 +1,4 @@
-package com.example.respawnban.mixin;
+package io.phanisment.hardcore.mixin;
 
 import net.minecraft.util.ActionResult;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import io.phanisment.hardcore.Main;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class PlayerRespawn {
