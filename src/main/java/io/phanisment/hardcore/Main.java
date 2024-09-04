@@ -4,6 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.event.player.PlayerDeathCallback;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
 
@@ -25,6 +27,12 @@ public class Main implements ModInitializer {
 			TempbanCommand.register(dispatcher);
 		});
 		
+		PlayerDeathCallback.EVENT.register((player, damageSource) -> {
+			if (player instanceof ServerPlayerEntity) {
+				TempbanManager.tempBanPlayer((ServerPlayerEntity) player, 20);
+			}
+		});
+		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
 		ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
 			UUID playerUUID = handler.getProfile().getId();
@@ -34,6 +42,7 @@ public class Main implements ModInitializer {
 		});
 		
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			LOGGER.info("Saved Banned Player...")
 			ConfigManager.saveBannedPlayers(TempbanManager.tempBannedPlayers);
 		});
 	}
