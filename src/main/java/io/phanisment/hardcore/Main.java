@@ -4,7 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
-import net.fabricmc.fabric.api.event.player.PlayerDeathCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.UUID;
@@ -22,17 +22,18 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hardcore?? Nope");
 		
-		PlayerDeathCallback.EVENT.register((player, damageSource) -> {
-			if (player instanceof ServerPlayerEntity) {
-				TempbanManager.tempBanPlayer((ServerPlayerEntity) player, 20);
-			}
-		});
-		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
+		
 		ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
 			UUID playerUUID = handler.getProfile().getId();
 			if (TempbanManager.isBanned(playerUUID)) {
 				handler.disconnect(Text.of("You are still temporarily banned!"));
+			}
+		});
+		
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			if (oldPlayer instanceof ServerPlayerEntity) {
+				TempbanManager.tempBanPlayer((ServerPlayerEntity) oldPlayer, 20);
 			}
 		});
 		
