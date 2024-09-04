@@ -1,4 +1,4 @@
-package io.phanisment.hardcore.api;
+package io.phanisment.hardcore.util;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
