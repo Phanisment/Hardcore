@@ -23,10 +23,6 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hardcore?? Nope");
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-			TempbanCommand.register(dispatcher);
-		});
-		
 		PlayerDeathCallback.EVENT.register((player, damageSource) -> {
 			if (player instanceof ServerPlayerEntity) {
 				TempbanManager.tempBanPlayer((ServerPlayerEntity) player, 20);
@@ -42,7 +38,7 @@ public class Main implements ModInitializer {
 		});
 		
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-			LOGGER.info("Saved Banned Player...")
+			LOGGER.info("Saved Banned Player...");
 			ConfigManager.saveBannedPlayers(TempbanManager.tempBannedPlayers);
 		});
 	}
