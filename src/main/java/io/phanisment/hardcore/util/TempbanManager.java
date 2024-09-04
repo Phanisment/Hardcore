@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 import io.phanisment.hardcore.util.ConfigManager;
 
 public class TempbanManager {
-	public static final HashMap<UUID, Long> tempBannedPlayers = ConfigManager.loadBannedPlayers();
+	public static final HashMap<String, Long> tempBannedPlayers = ConfigManager.loadBannedPlayers();
 	public static void tempBanPlayer(ServerPlayerEntity player, long durationInMinutes) {
-		UUID playerUUID = player.getUuid();
+		String playerName = player.getName().getString();
 		long banEndTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(durationInMinutes);
-		tempBannedPlayers.put(playerUUID, banEndTime);
+		tempBannedPlayers.put(playerName, banEndTime);
 		ConfigManager.saveBannedPlayers(tempBannedPlayers);
 		player.networkHandler.disconnect(Text.of("You have been temporarily banned for " + durationInMinutes + " minutes."));
 	}
@@ -28,13 +28,12 @@ public class TempbanManager {
 			return false;
 		});
 	}
-	public static boolean isBanned(UUID playerUUID) {
-		return tempBannedPlayers.containsKey(playerUUID);
+	public static boolean isBanned(String playerName) {
+		return tempBannedPlayers.containsKey(playerName);
 	}
-	
-	public static void unbanPlayer(UUID playerUUID) {
-		if (tempBannedPlayers.containsKey(playerUUID)) {
-			tempBannedPlayers.remove(playerUUID);
+	public static void unbanPlayer(String playerName) {
+		if (tempBannedPlayers.containsKey(playerName)) {
+			tempBannedPlayers.remove(playerName);
 			ConfigManager.saveBannedPlayers(tempBannedPlayers);
 		}
 	}
