@@ -10,7 +10,7 @@ public class Main implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hardcore?? NOPE")
+		LOGGER.info("Hardcore?? NOPE");
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			long currentTime = System.currentTimeMillis();
