@@ -1,14 +1,14 @@
 package io.phanisment.hardcore;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Main implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("hardcore");
@@ -18,13 +18,15 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Hardcore?? Nope");
 		
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			long currentTime = System.currentTimeMillis();
-			bannedPlayers.forEach((uuid, banEndTime) -> {
-				if (currentTime >= banEndTime) {
-					bannedPlayers.remove(uuid);
-				}
-			});
+		ServerTickEvents.END_SERVER_TICK.register(server -> TempBanManager.checkUnban());
+		ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
+			UUID playerUUID = handler.getProfile().getId();
+			if (TempBanManager.isBanned(playerUUID)) {
+				handler.disconnect(Text.of("You are still temporarily banned!"));
+			}
+		});
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			ConfigManager.saveBannedPlayers(TempBanManager.tempBannedPlayers);
 		});
 	}
 }
