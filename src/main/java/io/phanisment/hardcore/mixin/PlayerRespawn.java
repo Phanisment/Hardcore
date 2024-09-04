@@ -1,6 +1,5 @@
 package io.phanisment.hardcore.mixin;
 
-import net.minecraft.util.ActionResult;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -10,8 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Time
 
 import io.phanisment.hardcore.Main;
 
