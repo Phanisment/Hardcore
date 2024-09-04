@@ -13,23 +13,35 @@ import io.phanisment.hardcore.util.TempbanManager;
 
 public class TempbanCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(
-			literal("tempban")
+		dispatcher.register(CommandManager.literal("tempban")
+				.requires(source -> source.hasPermissionLevel(2))
 				.then(CommandManager.argument("player", StringArgumentType.string())
-				.then(CommandManager.argument("minutes", IntegerArgumentType.integer(1))
+				.then(CommandManager.argument("duration", StringArgumentType.string())
 				.executes(context -> {
 					String playerName = StringArgumentType.getString(context, "player");
-					int minutes = IntegerArgumentType.getInteger(context, "minutes");
-					ServerPlayerEntity player = context.getSource().getServer().getPlayerManager().getPlayer(playerName);
-					if (player != null) {
-						TempbanManager.tempBanPlayer(player, minutes);
-						context.getSource().sendFeedback(Text.of("Player " + playerName + " has been temporarily banned for " + minutes + " minutes."), true);
-						return 1;
-					} else {
-						context.getSource().sendError(Text.of("Player not found."));
-						return 0;
-					}
+					String duration = StringArgumentType.getString(context, "duration");
+					return 1;
 				})))
+		);
+		
+		dispatcher.register(CommandManager.literal("tunban")
+				.requires(source -> source.hasPermissionLevel(2))
+				.then(CommandManager.argument("playerUUID", StringArgumentType.string())
+				.executes(context -> {
+					String playerUUIDString = StringArgumentType.getString(context, "playerUUID");
+					try {
+						UUID playerUUID = UUID.fromString(playerUUIDString);
+						if (TempBanManager.isBanned(playerUUID)) {
+							TempBanManager.unbanPlayer(playerUUID);
+							context.getSource().sendFeedback(Text.of("Player unbanned successfully."), true);
+						} else {
+							context.getSource().sendError(Text.of("Player is not banned."));
+						}
+					} catch (IllegalArgumentException e) {
+						context.getSource().sendError(Text.of("Invalid UUID format."));
+					}
+					return 1;
+				}))
 		);
 	}
 }
