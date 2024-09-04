@@ -31,4 +31,11 @@ public class TempbanManager {
 	public static boolean isBanned(UUID playerUUID) {
 		return tempBannedPlayers.containsKey(playerUUID);
 	}
+	
+	public static void unbanPlayer(UUID playerUUID) {
+		if (tempBannedPlayers.containsKey(playerUUID)) {
+			tempBannedPlayers.remove(playerUUID);
+			ConfigManager.saveBannedPlayers(tempBannedPlayers);
+		}
+	}
 }
