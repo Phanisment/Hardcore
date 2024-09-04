@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -25,8 +26,8 @@ public class Main implements ModInitializer {
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
 		
-		ServerLoginConnectionEvents.AUTHENTICATION_SUCCESS.register((handler, server) -> {
-			String playerName = handler.getName().getString();
+		ServerLoginEvents.MODIFY_GAME_PROFILE.register((server, profile, handler, result) -> {
+			String playerName = profile.getName();
 			if (TempbanManager.isBanned(playerName)) {
 				handler.disconnect(Text.of("You are still temporarily banned!"));
 			}
