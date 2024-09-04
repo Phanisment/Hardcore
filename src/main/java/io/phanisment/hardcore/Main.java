@@ -1,22 +1,57 @@
-package io.phanisment;
+package io.phanisment.hardcore;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.PlayerRespawnCallback;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("hardcore");
+	public static final Logger LOGGER = LoggerFactory.getLogger("hardcore");
+	private static final ConcurrentHashMap<UUID, Long> bannedPlayers = new ConcurrentHashMap<>();
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+		PlayerRespawnCallback.EVENT.register((player, alive) -> {
+			if (player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+				UUID playerUUID = serverPlayer.getUuid();
+				long banEndTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(20);
+				bannedPlayers.put(playerUUID, banEndTime);
+				serverPlayer.networkHandler.disconnect(Text.of("You have been banned for 20 minutes due to respawn."));
+				return ActionResult.FAIL;
+			}
+			return ActionResult.PASS;
+		});
 
-		LOGGER.info("Hello Fabric world!");
+		/* ServerCommandManager.DISPATCHER.register(
+			CommandManager.literal("unban")
+				.requires(source -> source.hasPermissionLevel(2))
+				.then(CommandManager.argument("player", EntityArgumentType.player())
+					.executes(context -> {
+						ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+						UUID playerUUID = player.getUuid();
+						bannedPlayers.remove(playerUUID);
+						context.getSource().sendFeedback(Text.of("Player " + player.getEntityName() + " has been unbanned."), true);
+						return 1;
+					})
+				)
+		);*/
+
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			long currentTime = System.currentTimeMillis();
+			bannedPlayers.forEach((uuid, banEndTime) -> {
+				if (currentTime >= banEndTime) {
+					bannedPlayers.remove(uuid);
+				}
+			});
+		});
 	}
 }
