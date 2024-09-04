@@ -1,4 +1,4 @@
-package io.phanisment.hardcore.api;
+package io.phanisment.hardcore.util;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
