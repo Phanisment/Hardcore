@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import io.phanisment.hardcore.Main;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class MixinPlayerRespawn {
+public abstract class PlayerRespawn {
 	@Inject(method = "copyFrom", at = @At("RETURN"))
 	private void onPlayerRespawn(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo info) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
