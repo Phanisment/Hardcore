@@ -9,12 +9,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.UUID;
 
-package com.example.tempban;
-
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ConfigManager {
 	private static final File CONFIG_FILE = new File("config/tempbans.json");
 
