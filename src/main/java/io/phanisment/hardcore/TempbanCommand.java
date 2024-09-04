@@ -4,10 +4,10 @@ package com.example.tempban;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.server.command.CommandManager;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import static net.minecraft.server.command.CommandManager.literal;
+import net.minecraft.text.Text;
 
 import io.phanisment.hardcore.util.TempbanManager;
 
@@ -31,8 +31,8 @@ public class TempbanCommand {
 					String playerUUIDString = StringArgumentType.getString(context, "playerUUID");
 					try {
 						UUID playerUUID = UUID.fromString(playerUUIDString);
-						if (TempBanManager.isBanned(playerUUID)) {
-							TempBanManager.unbanPlayer(playerUUID);
+						if (TempbanManager.isBanned(playerUUID)) {
+							TempbanManager.unbanPlayer(playerUUID);
 							context.getSource().sendFeedback(Text.of("Player unbanned successfully."), true);
 						} else {
 							context.getSource().sendError(Text.of("Player is not banned."));
