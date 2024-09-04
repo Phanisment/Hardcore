@@ -26,10 +26,10 @@ public class Main implements ModInitializer {
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
 		
-		ServerLoginEvents.MODIFY_GAME_PROFILE.register((server, profile, handler, result) -> {
+		ServerPlayerEvents.ALLOW_LOGIN.register((connection, profile, name) -> {
 			String playerName = profile.getName();
-			if (TempbanManager.isBanned(playerName)) {
-				handler.disconnect(Text.of("You are still temporarily banned!"));
+			if (TempBanManager.isBanned(playerName)) {
+				connection.disconnect(Text.of("You are still temporarily banned!"));
 			}
 		});
 		
