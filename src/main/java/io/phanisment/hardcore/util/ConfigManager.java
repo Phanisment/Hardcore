@@ -5,13 +5,12 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Map;
 
 public class ConfigManager {
-	private static final File CONFIG_FILE = new File("config/tempbans.json");
-
+	private static final File CONFIG_FILE = new File("tempbans.json");
+	
 	public static HashMap<String, Long> loadBannedPlayers() {
 		HashMap<String, Long> bannedPlayers = new HashMap<>();
 		if (CONFIG_FILE.exists()) {
@@ -31,7 +30,7 @@ public class ConfigManager {
 		}
 		return bannedPlayers;
 	}
-
+	
 	public static void saveBannedPlayers(HashMap<String, Long> bannedPlayers) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
 			for (Map.Entry<String, Long> entry : bannedPlayers.entrySet()) {
