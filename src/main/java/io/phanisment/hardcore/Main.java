@@ -19,7 +19,7 @@ public class Main implements ModInitializer {
 		LOGGER.info("Hardcore?? Nope");
 		
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-			TempBanCommand.register(dispatcher);
+			TempbanCommand.register(dispatcher);
 		});
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempBanManager.checkUnban());
