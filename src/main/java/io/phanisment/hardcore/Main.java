@@ -10,6 +10,9 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.phanisment.hardcore.util.ConfigManager;
+import io.phanisment.hardcore.util.TempbanManager;
+
 public class Main implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("hardcore");
 	public static final ConcurrentHashMap<UUID, Long> bannedPlayers = new ConcurrentHashMap<>();
@@ -22,16 +25,16 @@ public class Main implements ModInitializer {
 			TempbanCommand.register(dispatcher);
 		});
 		
-		ServerTickEvents.END_SERVER_TICK.register(server -> TempBanManager.checkUnban());
+		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
 		ServerLoginConnectionEvents.QUERY_START.register((handler, server, sender, synchronizer) -> {
 			UUID playerUUID = handler.getProfile().getId();
-			if (TempBanManager.isBanned(playerUUID)) {
+			if (TempbanManager.isBanned(playerUUID)) {
 				handler.disconnect(Text.of("You are still temporarily banned!"));
 			}
 		});
 		
 		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-			ConfigManager.saveBannedPlayers(TempBanManager.tempBannedPlayers);
+			ConfigManager.saveBannedPlayers(TempbanManager.tempBannedPlayers);
 		});
 	}
 }
