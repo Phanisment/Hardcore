@@ -2,9 +2,7 @@
 	"required": true,
 	"package": "io.phanisment.hardcore.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExplosionBlocker"
-	],
+	"mixins": [],
 	"injectors": {
 		"defaultRequire": 1
 	}
