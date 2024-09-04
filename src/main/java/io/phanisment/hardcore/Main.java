@@ -17,7 +17,6 @@ import io.phanisment.hardcore.util.TempbanManager;
 
 public class Main implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("hardcore");
-	public static final ConcurrentHashMap<UUID, Long> bannedPlayers = new ConcurrentHashMap<>();
 
 	@Override
 	public void onInitialize() {
