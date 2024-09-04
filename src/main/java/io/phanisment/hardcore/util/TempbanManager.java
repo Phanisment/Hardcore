@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import io.phanisment.hardcore.util.ConfigManager;
 
 public class TempbanManager {
-	private static final HashMap<UUID, Long> tempBannedPlayers = ConfigManager.loadBannedPlayers();
+	public static final HashMap<UUID, Long> tempBannedPlayers = ConfigManager.loadBannedPlayers();
 	public static void tempBanPlayer(ServerPlayerEntity player, long durationInMinutes) {
 		UUID playerUUID = player.getUuid();
 		long banEndTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(durationInMinutes);
