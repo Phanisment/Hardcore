@@ -19,12 +19,11 @@ repositories {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+	splitEnvironmentSourceSets()
 
 	mods {
-		"modid" {
+		"hardcore" {
 			sourceSet sourceSets.main
-			sourceSet sourceSets.client
 		}
 	}
 
