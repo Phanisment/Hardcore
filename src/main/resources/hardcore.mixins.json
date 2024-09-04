@@ -3,7 +3,7 @@
 	"package": "io.phanisment.hardcore.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"PlayerRespawn"
 	],
 	"injectors": {
 		"defaultRequire": 1
