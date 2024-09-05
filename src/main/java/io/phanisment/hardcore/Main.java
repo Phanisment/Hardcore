@@ -33,7 +33,7 @@ public class Main implements ModInitializer {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			server.getPlayerManager().getPlayerList().forEach(player -> {
 				if (player instanceof ServerPlayerEntity) {
-					TempbanManager.tempBanPlayer((ServerPlayerEntity) player, 20);  // Tempban selama 20 menit
+					TempbanManager.tempBanPlayer((ServerPlayerEntity) player, 20);
 				}
 			});
 		});
