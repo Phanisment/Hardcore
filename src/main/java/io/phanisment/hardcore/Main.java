@@ -1,8 +1,10 @@
 package io.phanisment.hardcore;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerLoginEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -26,7 +28,7 @@ public class Main implements ModInitializer {
 		
 		ServerPlayerEvents.ALLOW_LOGIN.register((connection, profile, name) -> {
 			String playerName = profile.getName();
-			if (TempBanManager.isBanned(playerName)) {
+			if (TempbanManager.isBanned(playerName)) {
 				connection.disconnect(Text.of("You are still temporarily banned!"));
 			}
 		});
