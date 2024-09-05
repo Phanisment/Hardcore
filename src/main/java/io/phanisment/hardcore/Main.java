@@ -33,7 +33,7 @@ public class Main implements ModInitializer {
 				connection.setPacketListener(new ServerLoginNetworkHandler(server, connection));
 				ServerLoginNetworkHandler loginHandler = new ServerLoginNetworkHandler(server, connection);
 				String playerName = loginHandler.getGameProfile().getName();
-				if (TempBanManager.isBanned(playerName)) {
+				if (TempbanManager.isBanned(playerName)) {
 					connection.disconnect(Text.of("You are temporarily banned!"));
 				}
 			});
