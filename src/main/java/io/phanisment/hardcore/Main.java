@@ -4,10 +4,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerLoginEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.server.network.ServerLoginNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.UUID;
 
@@ -26,11 +28,15 @@ public class Main implements ModInitializer {
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> TempbanManager.checkUnban());
 		
-		ServerPlayerEvents.ALLOW_LOGIN.register((connection, profile, name) -> {
-			String playerName = profile.getName();
-			if (TempbanManager.isBanned(playerName)) {
-				connection.disconnect(Text.of("You are still temporarily banned!"));
-			}
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			server.getNetworkIo().setConnectionHandler((ClientConnection connection) -> {
+				connection.setPacketListener(new ServerLoginNetworkHandler(server, connection));
+				ServerLoginNetworkHandler loginHandler = new ServerLoginNetworkHandler(server, connection);
+				String playerName = loginHandler.getGameProfile().getName();
+				if (TempBanManager.isBanned(playerName)) {
+					connection.disconnect(Text.of("You are temporarily banned!"));
+				}
+			});
 		});
 		
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
