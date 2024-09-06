@@ -38,7 +38,7 @@ public class Main implements ModInitializer {
 				String playerName = player.getGameProfile().getName();
 				player.networkHandler.disconnect(Text.literal("Kamu telah mati, Kamu bisa join ke server selama 20 menit lagi"));
 				scheduler.schedule(() -> {
-					this.ban((playerName);
+					this.ban(playerName);
 				}, 1, TimeUnit.SECONDS);
 			}
 		});
