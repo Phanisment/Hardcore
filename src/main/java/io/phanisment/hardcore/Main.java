@@ -29,16 +29,17 @@ public class Main implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(CommandManager.literal("unbann")
 				.then(CommandManager.argument("player", StringArgumentType.word())
-					.executes(this::tempbanCommand)));
+					.executes(this::unbanCommand)));
 		});
 		
 		
 		// Respwn Event
 		ServerPlayerEvents.AFTER_RESPAWN.register((player, newplayer, alive) -> {
 			if (player instanceof ServerPlayerEntity) {
+				String playerName = player.getGameProfile().getName();
 				player.networkHandler.disconnect(Text.literal("Kamu telah mati, Kamu bisa join ke server selama 20 menit lagi"));
 				scheduler.schedule(() -> {
-					this.ban((ServerPlayerEntity) player);
+					this.ban((playerName);
 				}, 1, TimeUnit.SECONDS);
 			}
 		});
