@@ -28,7 +28,7 @@ public class Main implements ModInitializer {
 	public void onInitialize() {
 		// Command
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			dispatcher.register(CommandManager.literal("unbann")
+			dispatcher.register(CommandManager.literal("unban")
 				.then(CommandManager.argument("player", StringArgumentType.word())
 					.executes(this::unbanCommand)));
 		});
