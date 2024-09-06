@@ -9,6 +9,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -60,11 +61,10 @@ public class Main implements ModInitializer {
 				}
 			});
 		});
-	}
-	
-	@Override
-	public void onTerminate() {
-		scheduler.shutdown();
+		
+		ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+			scheduler.shutdown();
+		});
 	}
 	
 	// Executor
