@@ -6,8 +6,10 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
+import java.util.HashMap;
+
 public class Main implements ModInitializer {
-	public final HasMap<String, Long> ban = new HasMap<>();
+	public final HashMap<String, Long> ban = new HasMap<>();
 	
 	@Override
 	public void onInitialize() {
@@ -26,7 +28,7 @@ public class Main implements ModInitializer {
 					if (ban.containsKey(playerName)) {
 						long end = ban.get(playerName);
 						if (System.currentTimeMillis() < end) {
-							player.disconnect(Text.literal("You have been temporarily banned for 20 minutes!"));
+							player.networkHandler.disconnect(Text.literal("You have been temporarily banned for 20 minutes!"));
 						} else {
 							this.unban((ServerPlayerEntity) player);
 						}
