@@ -14,7 +14,7 @@ public class Main implements ModInitializer {
 		// Respwn Event
 		ServerPlayerEvents.AFTER_RESPAWN.register((player, newplayer, alive) -> {
 			if (player instanceof ServerPlayerEntity) {
-				this.ban((ServerPlayerEntity) player, 20);
+				this.ban((ServerPlayerEntity) player);
 			}
 		});
 		
@@ -37,9 +37,9 @@ public class Main implements ModInitializer {
 	}
 	
 	// Code Shortcut
-	public void ban(ServerPlayerEntity player, int duration) {
+	public void ban(ServerPlayerEntity player) {
 		String playerName = player.getGameProfile().getName();
-		long duration = duration * 60 * 1000;
+		long duration = 20 * 60 * 1000;
 		ban.put(playerName, System.currentTimeMillis() + duration);
 	}
 	
