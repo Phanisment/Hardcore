@@ -26,7 +26,7 @@ public class Main implements ModInitializer {
 					if (ban.containsKey(playerName)) {
 						long end = bannedPlayers.get(playerName);
 						if (System.currentTimeMillis() < end) {
-							player.disconnect(Text.literal("You have been temporarily banned for 20 minutes!"))
+							player.disconnect(Text.literal("You have been temporarily banned for 20 minutes!"));
 						} else {
 							this.unban((ServerPlayerEntity) player);
 						}
