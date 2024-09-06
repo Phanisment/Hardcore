@@ -7,7 +7,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 public class Main implements ModInitializer {
-	public final HasMap<String, Long> ban = new HasMap<>()
+	public final HasMap<String, Long> ban = new HasMap<>();
 	
 	@Override
 	public void onInitialize() {
@@ -24,7 +24,7 @@ public class Main implements ModInitializer {
 				if (player instanceof ServerPlayerEntity) {
 					String playerName = player.getGameProfile().getName();
 					if (ban.containsKey(playerName)) {
-						long end = bannedPlayers.get(playerName);
+						long end = ban.get(playerName);
 						if (System.currentTimeMillis() < end) {
 							player.disconnect(Text.literal("You have been temporarily banned for 20 minutes!"));
 						} else {
