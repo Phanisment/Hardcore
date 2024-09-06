@@ -32,7 +32,6 @@ public class Main implements ModInitializer {
 					.executes(this::unbanCommand)));
 		});
 		
-		
 		// Respwn Event
 		ServerPlayerEvents.AFTER_RESPAWN.register((player, newplayer, alive) -> {
 			if (player instanceof ServerPlayerEntity) {
@@ -75,7 +74,7 @@ public class Main implements ModInitializer {
 			context.getSource().sendError(Text.literal("Player name cannot be empty!"));
 		} else {
 			ban.remove(playerName);
-			context.getSource().sendFeedback(Text.literal("Unbanned " + playerName + "!"), false);
+			context.getSource().sendMessage(Text.literal("Unbanned " + playerName + "!"));
 		}
 		return Command.SINGLE_SUCCESS;
 	}
