@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 import java.util.HashMap;
 
 public class Main implements ModInitializer {
-	public final HashMap<String, Long> ban = new HasMap<>();
+	public final HashMap<String, Long> ban = new HashMap<>();
 	
 	@Override
 	public void onInitialize() {
