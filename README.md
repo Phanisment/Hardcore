@@ -7,8 +7,7 @@ When Player death/respawn player will banned for 20 minutes and this mod work wi
 
 # Doscumentation:
 ## Command:
-> `/unban <player>`
-> Unban player
+`/unban <player>` Unban player
 
 ## Configuration:
 Uh.. im not make that
