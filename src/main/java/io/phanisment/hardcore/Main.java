@@ -30,7 +30,10 @@ public class Main implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			dispatcher.register(CommandManager.literal("unban")
 				.then(CommandManager.argument("player", StringArgumentType.word())
-					.executes(this::unbanCommand)));
+					.requires(source -> source.hasPermissionLevel(4))
+					.executes(this::unbanCommand)
+				)
+			);
 		});
 		
 		// Respwn Event
