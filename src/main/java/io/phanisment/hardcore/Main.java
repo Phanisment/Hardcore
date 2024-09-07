@@ -40,7 +40,7 @@ public class Main implements ModInitializer {
 		ServerPlayerEvents.AFTER_RESPAWN.register((player, newplayer, alive) -> {
 			if (player instanceof ServerPlayerEntity) {
 				String playerName = player.getGameProfile().getName();
-				player.networkHandler.disconnect(Text.literal("Kamu telah mati, Kamu bisa join ke server selama 20 menit lagi"));
+				player.networkHandler.disconnect(Text.literal("You temporary banned for 20 minutes due to death."));
 				scheduler.schedule(() -> {
 					this.ban(playerName);
 				}, 1, TimeUnit.SECONDS);
@@ -55,9 +55,9 @@ public class Main implements ModInitializer {
 					if (ban.containsKey(playerName)) {
 						long end = ban.get(playerName);
 						if (System.currentTimeMillis() < end) {
-							player.networkHandler.disconnect(Text.literal("Kamu masih belum bisa memasuki server ini, coba lain kali"));
+							player.networkHandler.disconnect(Text.literal("Your ban season is not over yet, try another time again."));
 						} else {
-							player.sendMessage(Text.literal("Masa ban mu telah berakhir, Selamat bermain lagi."));
+							player.sendMessage(Text.literal("Your ban season is over, you can play again"));
 							ban.remove(playerName);
 						}
 					}
