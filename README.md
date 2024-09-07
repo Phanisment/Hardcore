@@ -5,7 +5,7 @@ This mod is for my server and its my first mod i make.
 # System of mod:
 When Player death/respawn player will banned for 20 minutes and this mod work with universal grave.
 
-# Doscumentation:
+# Documentation:
 ## Command:
 `/unban <player>` Unban player
 
